@@ -28,7 +28,14 @@ public class ProjectService {
         }
         return project;
     }
-    public Iterable<Project> getProjects(){
-        return projectRepository.findAll();
+    public Iterable<Project> getProjects(){return projectRepository.findAll();}
+
+    public void deleteProjectByIdentifier(String identifier){
+        Project project=projectRepository.findByProjectIdentifier(identifier.toUpperCase());
+        if(project == null){
+            throw new ProjectIdException("Can not find Project with "+identifier.toUpperCase() );
+        }
+
+        projectRepository.delete(project);
     }
 }
