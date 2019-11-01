@@ -8,10 +8,11 @@ class AddProject extends Component {
   constructor(props) {
     super(props);
 
+    //these are the state obejct which we are going to define now for further usage.
     this.state = {
       projectName: "",
       projectIdentifier: "",
-      projectDescritpion: "",
+      projectDescription: "",
       endDate: "",
       startDate: "",
       errors: {}
@@ -19,12 +20,16 @@ class AddProject extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //when an object recieve new props which are the errors on submission in our case,
+    //this method save those errors in 'errors' of our state
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
   }
 
   handler = e => {
+    //it will be used just to update the value of state object in order to update he control values,
+    //because each control is associated with state objects. They can't be directly changed.
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -33,7 +38,7 @@ class AddProject extends Component {
     var addProject = {
       projectName: this.state.projectName,
       projectIdentifier: this.state.projectIdentifier,
-      projectDescritpion: this.state.projectDescritpion,
+      projectDescription: this.state.projectDescription,
       startDate: this.state.startDate,
       endDate: this.state.endDate
     };
@@ -41,7 +46,14 @@ class AddProject extends Component {
   };
 
   render() {
+    //getting the error object from state.
     const { errors } = this.state;
+    /*the format of code is so simple, each input field has been validated using is-invalid field
+    and if their is any error in 'errors' object for specific form control it will display that speicific 
+    message for each form control. I am not goint to add description before each control.
+
+    I have just added details of one control 'VALIDATIONS', 'HANDLER' and 'PROPS'
+    */
     return (
       <div>
         <div className="project">
@@ -61,9 +73,16 @@ class AddProject extends Component {
                       })}
                       placeholder="Project Name"
                       name="projectName"
-                      value={this.state.projectName}
-                      onChange={this.handler}
+                      value={
+                        //this is the value of our state object
+                        this.state.projectName
+                      }
+                      onChange={
+                        //whenever their is change in value handler method is called.
+                        this.handler
+                      }
                     />
+                    {/*Below error will be shown only if ProjectName error exists.*/}
                     {errors.projectName && (
                       <div className="invalid-feedback">
                         {errors.projectName}
@@ -74,6 +93,7 @@ class AddProject extends Component {
                     <input
                       type="text"
                       className={classnames("form-control form-control-lg", {
+                        /*is-invalid class will be used only if their is ProjectIdentifier error in responseEntity we got. */
                         "is-invalid": errors.projectIdentifier
                       })}
                       placeholder="Unique Project ID"
@@ -90,16 +110,16 @@ class AddProject extends Component {
                   <div className="form-group">
                     <textarea
                       className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.projectDescritpion
+                        "is-invalid": errors.projectDescription
                       })}
                       placeholder="Project Description"
-                      name="projectDescritpion"
-                      value={this.state.projectDescritpion}
+                      name="projectDescription"
+                      value={this.state.projectDescription}
                       onChange={this.handler}
                     ></textarea>
-                    {errors.projectDescritpion && (
+                    {errors.projectDescription && (
                       <div className="invalid-feedback">
-                        {errors.projectDescritpion}
+                        {errors.projectDescription}
                       </div>
                     )}
                   </div>
