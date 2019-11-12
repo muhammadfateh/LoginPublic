@@ -1,6 +1,14 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { deleteProject } from "../../actions/projectActions";
 
 class ProjectItem extends Component {
+  onDeleteClick = id => {
+    this.props.deleteProject(id);
+  };
+
   render() {
     /*this method is so simple, just getting a project attribute form the props
     and adding the name, description and identifier for each project
@@ -24,16 +32,23 @@ class ProjectItem extends Component {
                     <i className="fa fa-flag-checkered pr-1">Project Board </i>
                   </li>
                 </a>
-                <a href="#">
+                {/* Link has been used to route to a specific path. Below line of code will 
+                be used to add a parameter in URL.  */}
+                <Link to={`/updateProject/${project.projectIdentifier}`}>
                   <li className="list-group-item update">
                     <i className="fa fa-edit pr-1">Update Project Info</i>
                   </li>
-                </a>
-                <a href="#">
-                  <li className="list-group-item delete">
-                    <i className="fa fa-minus-circle pr-1">Delete Project</i>
-                  </li>
-                </a>
+                </Link>
+
+                <li
+                  className="list-group-item delete"
+                  onClick={this.onDeleteClick.bind(
+                    this,
+                    project.projectIdentifier
+                  )}
+                >
+                  <i className="fa fa-minus-circle pr-1">Delete Project</i>
+                </li>
               </ul>
             </div>
           </div>
@@ -42,4 +57,11 @@ class ProjectItem extends Component {
     );
   }
 }
-export default ProjectItem;
+ProjectItem.propTypes = {
+  deleteProject: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { deleteProject }
+)(ProjectItem);

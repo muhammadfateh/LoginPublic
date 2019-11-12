@@ -1,4 +1,4 @@
-import { GET_PROJECTS } from "../actions/types";
+import { GET_PROJECTS, GET_PROJECT, DELETE_PROEJCT } from "../actions/types";
 
 const initialState = {
   projects: [],
@@ -11,6 +11,20 @@ export default function(state = initialState, action) {
       return {
         ...state,
         projects: action.payLoad
+      };
+    case GET_PROJECT:
+      return {
+        ...state,
+        project: action.payLoad
+      };
+    case DELETE_PROEJCT:
+      //when a project is deleted it returns the 'projectIdentifier' as action.payLoad that will be used
+      //to filter the list of projects to be shown.
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project.projectIdentifier !== action.payLoad
+        )
       };
     default:
       return state;
