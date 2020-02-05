@@ -1,11 +1,13 @@
 package com.meganos.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-public class ProjectTasks {
+public class ProjectTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +20,11 @@ public class ProjectTasks {
     private Integer priority;
     private Date dueDate;
     //ManyToOne with Backlog
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name="backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
+
     @Column(updatable = false)
     private String projectIdentifier;
 
@@ -34,7 +41,7 @@ public class ProjectTasks {
         this.updatedAt=new Date();
     }
 
-    public ProjectTasks() {
+    public ProjectTask() {
     }
 
     public Long getId() {
@@ -115,6 +122,14 @@ public class ProjectTasks {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
     }
 
     @Override
